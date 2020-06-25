@@ -1,18 +1,32 @@
 const https = require("https");
-setInterval(function(){ 
-    //this code runs every second 
+const http = require('http');
+const fs = require("fs");
 
-	const url = "https://www.instagram.com/aliaabhatt/?__a=1";
 
-	https.get(url, res => {
-	  res.setEncoding("utf8");
-	  let body = "";
-	  res.on("data", data => {
-		body += data;
-	  });
-	  res.on("end", () => {
-		body = JSON.parse(body);
-		console.log(body.graphql.user.edge_followed_by.count);
-	  });
-	});
-}, 5000);
+
+// Load image to memory
+const buf = fs.readFileSync('aliabhatt.jpg');
+const base64img = buf.toString('base64');
+
+fs.readFile('./index.html', function (err, html) {
+    if (err) {
+        throw err; 
+    }       
+    http.createServer(function(request, response) { 
+    		if(request.url === "/"){
+    			response.writeHeader(200, {"Content-Type": "text/html"});  
+        		response.write(html); 
+        		response.end();	
+    		}
+    		else if(request.url === "/user"){
+    			response.writeHeader(200,{"Content-Type":"application/json"});
+    			var data = {
+    				"name": "Alia Bhatt",
+    				"handle": "aliaabhatt",
+    				"img": base64img
+    			}
+    			response.write(JSON.stringify(data));
+    			response.end();
+    		}	
+    }).listen(8000);
+});

@@ -1,0 +1,64 @@
+<HTML>
+
+<HEAD>
+
+<TITLE>Your Title Here</TITLE>
+
+<script type="text/javascript">
+	function fetchFollowers(handle){
+		var f = document.getElementById("FOLLOWERS");
+		var request = new XMLHttpRequest()
+		request.open('GET', 'https://www.instagram.com/'+handle+'/?__a=1', true)
+		request.onload = function() {
+	  	// Begin accessing JSON data here
+	  	var data = JSON.parse(this.response)
+		 if (request.status >= 200 && request.status < 400) {
+		    f.innerText = data.graphql.user.edge_followed_by.count;
+		  } else {
+		  	f.innerText = "Network Down!!";
+		  }
+		}
+		// log
+		// console.log("Sending now")
+		request.send();
+		setTimeout(fetchData,5000);
+	};
+	function fetchData(){
+		var n = document.getElementById("NAME");
+		// var handle = document.getElementById("HANDLE");
+		var img = document.getElementById('IMAGE');
+
+		var request = new XMLHttpRequest()
+		request.open('GET', '/user', true)
+		request.onload = function() {
+	  	// Begin accessing JSON data here
+	  	var data = JSON.parse(this.response)
+		 if (request.status >= 200 && request.status < 400) {
+		    n.innerText = data.name;
+		    img.src = "data:image/jpeg;base64, "+data.img;
+		    fetchFollowers(data.handle);
+		  } else {
+		  	n.innerText = "Network Down";
+		  }
+		}
+		request.send();
+	};
+
+</script>
+</HEAD>
+
+<BODY BGCOLOR="FFFFFF" onload="fetchData()">
+
+<CENTER>
+	<img style='display:block; width:100px;height:100px;' id='IMAGE'
+       alt="Network" 
+       />
+	<p id="NAME"></p>
+	<p id="FOLLOWERS"></p>
+</CENTER>
+
+</BODY>
+
+</HTML>
+
+ 
