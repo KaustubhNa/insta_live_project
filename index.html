@@ -5,8 +5,8 @@
 <TITLE>Your Title Here</TITLE>
 
 <script type="text/javascript">
-	function fetchFollowers(handle){
-		var f = document.getElementById("FOLLOWERS");
+	function fetchFollowers(handle,num){
+		var f = document.getElementById("fw"+num);
 		var request = new XMLHttpRequest()
 		request.open('GET', 'https://www.instagram.com/'+handle+'/?__a=1', true)
 		request.onload = function() {
@@ -14,32 +14,26 @@
 	  	var data = JSON.parse(this.response)
 		 if (request.status >= 200 && request.status < 400) {
 		    f.innerText = data.graphql.user.edge_followed_by.count;
-		  } else {
-		  	f.innerText = "Network Down!!";
 		  }
 		}
 		// log
 		// console.log("Sending now")
 		request.send();
-		setTimeout(fetchData,5000);
+		setTimeout(fetchFollowers,5000,handle,num);
 	};
 	function fetchData(){
-		var n = document.getElementById("NAME");
-		// var handle = document.getElementById("HANDLE");
-		var img = document.getElementById('IMAGE');
-
 		var request = new XMLHttpRequest()
-		request.open('GET', '/user', true)
+		request.open('GET', '/star', true)
 		request.onload = function() {
 	  	// Begin accessing JSON data here
-	  	var data = JSON.parse(this.response)
-		 if (request.status >= 200 && request.status < 400) {
-		    n.innerText = data.name;
-		    img.src = "data:image/jpeg;base64, "+data.img;
-		    fetchFollowers(data.handle);
-		  } else {
-		  	n.innerText = "Network Down";
-		  }
+		  	const data = JSON.parse(this.response)
+			if (request.status >= 200 && request.status < 400) {
+				for(let i=0; i<data.stars.length;++i){
+					document.getElementById('nm'+i).innerText = data.stars[i].name;
+					document.getElementById('im'+i).src = "data:image/jpeg;base64, "+data.stars[i].img;
+					fetchFollowers(data.stars[i].handle,i)
+				}
+			}
 		}
 		request.send();
 	};
@@ -78,22 +72,21 @@ p.ex2 {
 	
     <h1>STAR KIDS v/s OUTSIDERS</h1>
 	<h2>WHO WILL PREVAIL?</h2>
-	
 </center>  
 
 <LEFT>
-	<p class="ex1"><img style='display:block; width:512px;height:288px;' id='IMAGE'
-       alt="Network" 
+	<p class="ex1"><img style='display:block; width:512px;height:288px;' id='im0'
+       alt="Network Down" 
        /></p>
-	<p class="ex2" id="NAME"></p>
-	<p class="ex2" id="FOLLOWERS"></p>
+	<p class="ex2" id="nm0"></p>
+	<p class="ex2" id="fw0"></p>
 </LEFT>
 <RIGHT>
-	<p class="ex1"><img style='display:block; width:780px;height:405px;' id='IMAGE'
-       alt="Network" 
+	<p class="ex1"><img style='display:block; width:780px;height:405px;' id='im1'
+       alt="Network Down" 
        /></p>
-	<p class="ex2" id="NAME"></p>
-	<p class="ex2" id="FOLLOWERS"></p>
+	<p class="ex2" id="nm1"></p>
+	<p class="ex2" id="fw1"></p>
 </RIGHT>
 </BODY>
 
