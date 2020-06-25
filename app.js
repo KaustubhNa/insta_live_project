@@ -27,6 +27,16 @@ fs.readFile('./index.html', function (err, html) {
     			}
     			response.write(JSON.stringify(data));
     			response.end();
-    		}	
+    		}
+			else if(request.url === "/user"){
+    			response.writeHeader(200,{"Content-Type":"application/json"});
+    			var data = {
+    				"name": "Kangana Ranaut",
+    				"handle": "team_kangana_ranaut",
+    				"img": base64img
+    			}
+    			response.write(JSON.stringify(data));
+    			response.end();
+    		}
     }).listen(8000);
 });
