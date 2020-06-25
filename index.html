@@ -13,14 +13,13 @@
 	  	// Begin accessing JSON data here
 	  	var data = JSON.parse(this.response)
 		 if (request.status >= 200 && request.status < 400) {
-		 	console.log(data);
 		    f.innerText = data.graphql.user.edge_followed_by.count;
 		  } else {
 		  	f.innerText = "Network Down!!";
 		  }
 		}
 		// log
-		console.log("Sending now")
+		// console.log("Sending now")
 		request.send();
 		setTimeout(fetchData,5000);
 	};
