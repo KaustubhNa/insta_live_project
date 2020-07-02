@@ -13,7 +13,10 @@
 	  	// Begin accessing JSON data here
 	  	var data = JSON.parse(this.response)
 		 if (request.status >= 200 && request.status < 400) {
-		    f.innerText = data.graphql.user.edge_followed_by.count;
+			var a = data.graphql.user.edge_followed_by.count;
+			var b = a.toString().split(".");
+			b[0] = b[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+			f.innerText = b.join(".");
 		  }
 		}
 		// log
