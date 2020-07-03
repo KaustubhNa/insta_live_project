@@ -2,27 +2,44 @@
 
 <HEAD>
 
-<TITLE>Your Title Here</TITLE>
+<TITLE>LOL</TITLE>
 
 <script type="text/javascript">
-	function fetchFollowers(handle,num){
+	let followers = [];
+	let updateStarted = [];
+	function updateCount(num){
 		var f = document.getElementById("fw"+num);
+		if(followers[num] < 1 ){
+			console.log("Not able to fetch followers");
+			return;
+		}
+		let k = followers[num] + Math.floor((Math.random() * 10) + 1) - 5;
+		let b = k.toString().split(".");
+		b[0] = b[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		f.innerText = b.join('');
+		setTimeout(updateCount,5000,num);
+	}
+	function fetchFollowers(handle,num){
 		var request = new XMLHttpRequest()
 		request.open('GET', 'https://www.instagram.com/'+handle+'/?__a=1', true)
 		request.onload = function() {
 	  	// Begin accessing JSON data here
 	  	var data = JSON.parse(this.response)
 		 if (request.status >= 200 && request.status < 400) {
-			var a = data.graphql.user.edge_followed_by.count;
-			var b = a.toString().split(".");
-			b[0] = b[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-			f.innerText = b.join(".");
-		  }
+			followers[num] = data.graphql.user.edge_followed_by.count;
+			// Log
+			// followers[num] = Math.floor((Math.random() * 1000) + 1);
+			if(!updateStarted[num]){
+				updateStarted[num] = true;
+				updateCount(num);
+			}
+		  }	
 		}
-		// log
+		//log
 		// console.log("Sending now")
 		request.send();
-		setTimeout(fetchFollowers,5000,handle,num);
+		// 60*
+		setTimeout(fetchFollowers,12*60*1000,handle,num);
 	};
 	function fetchData(){
 		var request = new XMLHttpRequest()
@@ -34,7 +51,9 @@
 				for(let i=0; i<data.stars.length;++i){
 					document.getElementById('nm'+i).innerText = data.stars[i].name;
 					document.getElementById('im'+i).src = "data:image/jpeg;base64, "+data.stars[i].img;
-					fetchFollowers(data.stars[i].handle,i)
+					followers.push(-1);
+					updateStarted.push(false);
+					fetchFollowers(data.stars[i].handle,i);
 				}
 			}
 		}

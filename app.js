@@ -2,7 +2,7 @@ const https = require("https");
 const http = require('http');
 const fs = require("fs");
 
-
+const port = 8000;
 
 // Load image to memory
 
@@ -39,5 +39,12 @@ fs.readFile('./index.html', function (err, html) {
     			response.write(JSON.stringify(starData));
     			response.end();
     		}
-    }).listen(8000);
+    }).listen(port, function(err){
+        if(err){
+            console.log(err);
+            return
+        }
+        console.log("Started LOCALHOST server at: "+port);
+    })
+    ;
 });
