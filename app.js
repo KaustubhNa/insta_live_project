@@ -39,6 +39,20 @@ fs.readFile('./index.html', function (err, html) {
     			response.write(JSON.stringify(starData));
     			response.end();
     		}
+            else{
+                // Can read local files
+                let fileName = request.url.replace('/','');
+                fs.readFile(fileName,function(err,file){
+                    if(err){
+                        console.log(err);
+                        response.end();
+                        return
+                    }
+                    response.writeHeader(200, {"Content-Type": "text/html"});  
+                    response.write(file); 
+                    response.end();
+                });
+            }
     }).listen(port, function(err){
         if(err){
             console.log(err);

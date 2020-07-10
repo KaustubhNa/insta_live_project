@@ -4,6 +4,7 @@
 
 <TITLE>LOL</TITLE>
 
+<script src="odometer.min.js"></script>
 <script type="text/javascript">
 	let followers = [];
 	let updateStarted = [];
@@ -13,10 +14,11 @@
 			console.log("Not able to fetch followers");
 			return;
 		}
-		let k = followers[num] + Math.floor((Math.random() * 10) + 1) - 5;
-		let b = k.toString().split(".");
-		b[0] = b[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-		f.innerText = b.join('');
+		// let k = followers[num] + Math.floor((Math.random() * 10) + 1) - 5;
+		// let b = k.toString().split(".");
+		// b[0] = b[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		// f.innerText = b.join('');
+		f.innerHTML = followers[num] + Math.floor((Math.random() * 10) + 1) - 5;
 		setTimeout(updateCount,5000,num);
 	}
 	function fetchFollowers(handle,num){
@@ -97,6 +99,7 @@ p.ex3 {
   padding: 38px;
 }
 </style>
+<link rel="stylesheet" href="odometer-theme-default.css" />
 <BODY BGCOLOR="FFFFFF" onload="fetchData()">
 
 <center>
@@ -110,14 +113,14 @@ p.ex3 {
        alt="Network Down" 
        /></p>
 	<p style="font-weight: bold;" class="ex2" id="nm0"></p>
-	<p style="font-weight: bold; font-size: 40px;" class="ex3" id="fw0"></p>
+	<p style="font-size: 40px;" class="ex3 odometer" id="fw0"></p>
 </li>
 <li>
 	<p class="ex1"><img style='display:block; width:512px;height:288px;' id='im1'
        alt="Network Down" 
        /></p>
 	<p style="font-weight: bold; text-align: left" class="ex2" id="nm1"></p>
-	<p style="font-weight: bold; font-size: 40px; padding-right: 85px; text-align: center;" class="ex3" id="fw1"></p>
+	<p style="font-size: 40px; padding-right: 85px; text-align: center;" class="ex3 odometer" id="fw1"></p>
 </li></ul>
 </BODY>
 
